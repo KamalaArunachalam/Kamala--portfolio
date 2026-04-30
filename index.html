@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAMALA ARUNACHALAM — DIGITAL STRATEGIST & CREATIVE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --void:   #060606;
+            --dark:   #0e0e0e;
+            --panel:  #111111;
+            --ink:    #e8e0d4;
+            --dim:    rgba(232,224,212,0.45);
+            --rust:   #c8391a;
+            --rust2:  #a02e14;
+            --border: rgba(232,224,212,0.1);
+            --border2:rgba(232,224,212,0.22);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--void);
+            color: var(--ink);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* GRAIN */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 9999;
+            opacity: 0.045;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 180px 180px;
+        }
+
+        /* SCANLINES */
+        body::after {
+            content: '';
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 9998;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
+        }
+
+        /* ── TICKER ── */
+        .ticker {
+            background: var(--rust);
+            overflow: hidden; padding: 0.5rem 0;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(0,0,0,0.4);
+        }
+        .ticker-inner {
+            display: inline-flex;
+            animation: scroll-left 35s linear infinite;
+        }
+        .ticker-inner span {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.5rem; color: var(--ink);
+            letter-spacing: 0.08em; padding: 0 2rem;
+        }
+        .ticker-inner span::after { content: ' ◆ '; opacity: 0.5; }
+        @keyframes scroll-left {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(6,6,6,0.96);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.9rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem; letter-spacing: 0.06em;
+            color: var(--ink); text-decoration: none;
+        }
+        .nav-logo em { color: var(--rust); font-style: normal; }
+        .nav-links { display: flex; list-style: none; }
+        .nav-links a {
+            display: block; padding: 0.5rem 1.1rem;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.48rem; color: var(--dim);
+            text-decoration: none; text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-left: 1px solid var(--border);
+            transition: color 0.12s, background 0.12s;
+        }
+        .nav-links li:last-child a { border-right: 1px solid var(--border); }
+        .nav-links a:hover { color: var(--ink); background: rgba(200,57,26,0.1); }
+
+        /* ── HERO ── */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            border-bottom: 1px solid var(--border);
+            min-height: calc(100vh - 82px);
+        }
+        .hero-left {
+            border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .hero-top { padding: 3rem 3rem 2rem; }
+
+        .hero-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.48rem; letter-spacing: 0.1em;
+            color: var(--rust); margin-bottom: 2.25rem;
+            display: flex; align-items: center; gap: 0.85rem;
+        }
+        .hero-label::before {
+            content: '';
+            display: inline-block; width: 2rem; height: 1px;
+            background: var(--rust);
+        }
+
+        .hero-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4.5rem, 9vw, 8rem);
+            line-height: 0.88; letter-spacing: -0.01em;
+            margin-bottom: 1.75rem;
+        }
+        .hero-name:hover {
+            animation: name-glitch 0.35s steps(2) 1;
+        }
+        .hero-name .accent { color: var(--rust); }
+
+        @keyframes name-glitch {
+            0%   { text-shadow: 2px 0 #ff0040, -2px 0 #00ffcc; transform: skewX(0deg); }
+            25%  { text-shadow: -3px 0 #ff0040, 3px 0 #00ffcc; transform: skewX(-1deg); }
+            50%  { text-shadow: 3px 0 #ff0040, -3px 0 #00ffcc; transform: skewX(1deg); }
+            75%  { text-shadow: -2px 0 #ff0040, 2px 0 #00ffcc; transform: skewX(-0.5deg); }
+            100% { text-shadow: none; transform: skewX(0deg); }
+        }
+
+        .hero-role {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.44rem; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--dim);
+            border-top: 1px solid var(--border);
+            padding-top: 1.25rem; line-height: 2.2;
+        }
+
+        .hero-stats {
+            display: grid; grid-template-columns: repeat(4,1fr);
+            border-top: 1px solid var(--border);
+        }
+        .s-box {
+            border-right: 1px solid var(--border);
+            padding: 1.5rem 1rem; text-align: center;
+        }
+        .s-box:last-child { border-right: none; }
+        .s-box .n {
+            display: block;
+            font-family: 'VT323', monospace;
+            font-size: 3.5rem; line-height: 1; color: var(--rust);
+        }
+        .s-box .l {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.4rem; text-transform: uppercase;
+            letter-spacing: 0.08em; margin-top: 0.4rem; color: var(--dim);
+        }
+
+        .hero-cta { display: flex; border-top: 1px solid var(--border); }
+        .hbtn {
+            flex: 1; padding: 1.1rem 0.5rem;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.42rem; letter-spacing: 0.05em;
+            text-decoration: none; text-align: center;
+            border-right: 1px solid var(--border); display: block;
+            text-transform: uppercase;
+            transition: background 0.1s, color 0.1s;
+        }
+        .hbtn:last-child { border-right: none; }
+        .hbtn-dark { background: var(--rust); color: var(--ink); }
+        .hbtn-dark:hover { background: var(--rust2); }
+        .hbtn-light { background: transparent; color: var(--dim); }
+        .hbtn-light:hover { background: rgba(200,57,26,0.1); color: var(--ink); }
+
+        .hero-right {
+            background: var(--panel);
+            display: flex; flex-direction: column;
+        }
+        .hero-photo {
+            flex: 1; overflow: hidden; position: relative;
+        }
+        .hero-photo img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: top center;
+            display: block;
+            filter: grayscale(20%) contrast(1.15) brightness(0.85);
+        }
+        /* scanlines on photo */
+        .hero-photo::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.12) 4px);
+            pointer-events: none;
+        }
+        .photo-stamp {
+            position: absolute; bottom: 1rem; left: 1rem;
+            background: var(--rust); color: var(--ink);
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.42rem; letter-spacing: 0.1em;
+            padding: 0.45rem 0.75rem; z-index: 1;
+        }
+        .hero-avail {
+            border-top: 1px solid var(--border);
+            padding: 1.1rem;
+            background: rgba(200,57,26,0.07);
+            text-align: center;
+        }
+        .hero-avail .a1 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.58rem; color: var(--rust); letter-spacing: 0.1em;
+        }
+        .hero-avail .a2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem; color: var(--dim); margin-top: 0.5rem;
+        }
+
+        /* ── SECTION HEADER ── */
+        .sh {
+            border-bottom: 1px solid var(--border);
+            border-top: 1px solid var(--border);
+            padding: 1.1rem 2rem;
+            display: flex; align-items: baseline; justify-content: space-between;
+            background: var(--dark);
+        }
+        .sh h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+            letter-spacing: 0.03em; line-height: 1; color: var(--ink);
+        }
+        .sh h2 .sp {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.65rem; color: var(--rust);
+            margin-right: 0.85rem; letter-spacing: 0.05em;
+        }
+        .sh .sn {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.4rem; letter-spacing: 0.08em; color: var(--dim);
+        }
+        .sh-rust { background: var(--rust); border-color: rgba(0,0,0,0.2); }
+        .sh-rust h2 { color: var(--ink); }
+        .sh-rust .sp { color: rgba(255,255,255,0.45); }
+        .sh-rust .sn { color: rgba(255,255,255,0.55); }
+
+        /* ── WORKS GRID ── */
+        .wgrid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+        }
+        .wi {
+            position: relative; overflow: hidden;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            aspect-ratio: 1; cursor: pointer;
+        }
+        .wi.wide { grid-column: span 2; aspect-ratio: 2/1; }
+        .wi img, .wi video {
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
+            filter: grayscale(30%) contrast(1.1);
+            transition: transform 0.3s, filter 0.3s;
+        }
+        .wi:hover img, .wi:hover video {
+            transform: scale(1.05);
+            filter: grayscale(0%) contrast(1.15);
+        }
+        .wi-overlay {
+            position: absolute; inset: 0;
+            background: var(--rust); opacity: 0;
+            transition: opacity 0.2s; mix-blend-mode: multiply;
+        }
+        .wi:hover .wi-overlay { opacity: 0.5; }
+        .wi-label {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: var(--void); color: var(--ink);
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.42rem; letter-spacing: 0.05em;
+            padding: 0.65rem 0.85rem;
+            border-top: 1px solid var(--rust);
+            transform: translateY(100%); transition: transform 0.2s;
+        }
+        .wi:hover .wi-label { transform: translateY(0); }
+
+        /* ── CLIENT WORK ── */
+        .bgrid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--border);
+        }
+        .bcol { border-right: 1px solid var(--border); }
+        .bcol:last-child { border-right: none; }
+        .bcol-hd {
+            background: var(--dark);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 1.75rem;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.55rem; letter-spacing: 0.1em;
+            color: var(--rust);
+        }
+        .bproj {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1rem 1.75rem;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none; color: var(--ink);
+            transition: background 0.1s;
+        }
+        .bproj:last-child { border-bottom: none; }
+        .bproj:hover { background: rgba(200,57,26,0.07); }
+        .bn {
+            font-family: 'VT323', monospace;
+            font-size: 2rem; color: var(--rust); line-height: 1;
+            min-width: 2.5rem;
+        }
+        .bi { flex: 1; }
+        .bt {
+            font-size: 0.72rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .bm { font-size: 0.6rem; color: var(--dim); margin-top: 0.15rem; }
+        .ba { font-size: 0.9rem; color: var(--dim); transition: color 0.1s; }
+        .bproj:hover .ba { color: var(--rust); }
+
+        .bstat {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1rem 1.75rem;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+        }
+        .bstat:last-child { border-bottom: none; }
+        .bstat-rust { background: rgba(200,57,26,0.12); }
+
+        /* ── ABOUT ── */
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--border);
+        }
+        .ac {
+            border-right: 1px solid var(--border);
+            padding: 3rem;
+        }
+        .ac:last-child { border-right: none; }
+        .ac p {
+            color: rgba(232,224,212,0.7);
+            line-height: 2; margin-bottom: 1rem;
+            font-size: 0.8rem;
+        }
+        .ac p:last-child { margin-bottom: 0; }
+        .ac p strong { color: var(--rust); }
+
+        .astats {
+            display: grid; grid-template-columns: 1fr 1fr;
+            border: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+        .ast {
+            text-align: center; padding: 1.5rem 1rem;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .ast:nth-child(2n) { border-right: none; }
+        .ast:nth-last-child(-n+2) { border-bottom: none; }
+        .ast .an {
+            display: block;
+            font-family: 'VT323', monospace;
+            font-size: 3rem; color: var(--rust);
+        }
+        .ast .al {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.4rem; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--dim);
+        }
+
+        /* ── EXPERIENCE ── */
+        .elist { border-bottom: 1px solid var(--border); }
+        .ei {
+            display: grid; grid-template-columns: 68px 1fr;
+            border-bottom: 1px solid var(--border);
+        }
+        .ei:last-child { border-bottom: none; }
+        .enum {
+            background: var(--rust);
+            font-family: 'VT323', monospace; font-size: 2.5rem;
+            color: var(--ink);
+            display: flex; align-items: center; justify-content: center;
+            border-right: 1px solid rgba(0,0,0,0.3);
+        }
+        .ec { padding: 1.75rem 2.25rem; }
+        .eco {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.42rem; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--rust); margin-bottom: 0.55rem;
+        }
+        .er {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.75rem; letter-spacing: 0.03em;
+            line-height: 1.1; margin-bottom: 0.35rem;
+        }
+        .em {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem; color: var(--dim); margin-bottom: 0.75rem;
+        }
+        .ed { font-size: 0.75rem; line-height: 1.9; color: rgba(232,224,212,0.55); }
+        .esub { margin-top: 1rem; padding-left: 1rem; border-left: 2px solid var(--rust); }
+        .esr { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.1rem; }
+        .esm { font-size: 0.6rem; color: var(--dim); margin-bottom: 0.5rem; font-family: 'Space Mono', monospace; }
+
+        /* ── SKILLS — PIXEL BARS ── */
+        .sk-bars {
+            padding: 2.5rem 0;
+            display: grid; grid-template-columns: 1fr 1fr;
+        }
+        .sk-col { padding: 0 3rem; border-right: 1px solid var(--border); }
+        .sk-col:last-child { border-right: none; }
+
+        .skill-row {
+            display: grid;
+            grid-template-columns: 2.25rem 1fr auto;
+            align-items: center; gap: 1rem;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .skill-row:last-child { border-bottom: none; }
+        .skill-num {
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem; color: var(--rust); text-align: right;
+            line-height: 1;
+        }
+        .skill-name {
+            font-size: 0.65rem; text-transform: uppercase;
+            letter-spacing: 0.06em; color: var(--ink);
+        }
+        .skill-pct {
+            font-family: 'VT323', monospace;
+            font-size: 1.6rem; color: var(--rust); line-height: 1;
+        }
+        .skill-bar-wrap {
+            grid-column: 2 / 4;
+            height: 3px;
+            background: rgba(255,255,255,0.06);
+            margin-top: -0.45rem;
+            overflow: hidden;
+        }
+        .skill-bar {
+            height: 100%; background: var(--rust);
+            transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+            width: 0;
+        }
+
+        /* ── CERTS ── */
+        .cert-list { border-top: 1px solid var(--border); }
+        .ci {
+            display: flex; align-items: center; gap: 1.5rem;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .ci:last-child { border-bottom: none; }
+        .ci .cnum {
+            font-family: 'VT323', monospace;
+            font-size: 1.4rem; color: var(--rust);
+        }
+        .ci .cn {
+            font-size: 0.72rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+
+        /* ── EDUCATION ── */
+        .edu-list { border-bottom: 1px solid var(--border); }
+        .edu-row {
+            display: grid; grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--border);
+        }
+        .edu-row:last-child { border-bottom: none; }
+        .esn {
+            padding: 1.5rem 2rem; border-right: 1px solid var(--border);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem; letter-spacing: 0.04em;
+            display: flex; align-items: center;
+        }
+        .edt { padding: 1.5rem 2rem; display: flex; flex-direction: column; justify-content: center; }
+        .edg { font-size: 0.72rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .eyr {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.42rem; color: var(--dim);
+        }
+
+        /* ── CONTACT ── */
+        .ct-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--border);
+        }
+        .ct-hl {
+            border-right: 1px solid var(--border);
+            padding: 3.5rem 3rem;
+            background: rgba(200,57,26,0.04);
+        }
+        .ct-hl h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem,6vw,5.5rem);
+            line-height: 0.9; color: var(--ink);
+            letter-spacing: -0.01em; margin-bottom: 2rem;
+        }
+        .ct-hl h2 em { color: var(--rust); font-style: normal; }
+        .ct-hl p { font-size: 0.75rem; color: rgba(232,224,212,0.6); line-height: 2; }
+        .ct-links { }
+        .cl {
+            display: flex; align-items: center; gap: 1.25rem;
+            padding: 1.35rem 2rem;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none; color: var(--ink);
+            transition: background 0.1s;
+        }
+        .cl:last-child { border-bottom: none; }
+        .cl:hover { background: rgba(200,57,26,0.07); }
+        .cl-ic {
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem; color: var(--rust);
+            width: 2.5rem; text-align: center; line-height: 1;
+        }
+        .cl-info span {
+            display: block;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.38rem; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--dim); margin-bottom: 0.25rem;
+        }
+        .cl-info strong { font-size: 0.75rem; font-weight: 700; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--dark);
+            border-top: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .fl {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem; color: var(--ink); letter-spacing: 0.05em;
+        }
+        .fl em { color: var(--rust); font-style: normal; }
+        .fc {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.4rem; color: var(--dim);
+            text-transform: uppercase; letter-spacing: 0.1em;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 960px) {
+            .hero { grid-template-columns: 1fr; min-height: auto; }
+            .hero-right { height: 420px; }
+            .hero-stats { grid-template-columns: repeat(2,1fr); }
+            .wgrid { grid-template-columns: repeat(2,1fr); }
+            .wi.wide { grid-column: span 1; aspect-ratio: 1; }
+            .bgrid { grid-template-columns: 1fr; }
+            .bcol { border-right: none; border-bottom: 1px solid var(--border); }
+            .about-grid { grid-template-columns: 1fr; }
+            .ac { border-right: none; border-bottom: 1px solid var(--border); }
+            .sk-bars { grid-template-columns: 1fr; }
+            .sk-col { border-right: none; border-bottom: 1px solid var(--border); padding: 0 2rem; }
+            .sk-col:last-child { border-bottom: none; }
+            .ct-grid { grid-template-columns: 1fr; }
+            .ct-hl { border-right: none; border-bottom: 1px solid var(--border); }
+            .edu-row { grid-template-columns: 1fr; }
+            .esn { border-right: none; border-bottom: 1px solid var(--border); }
+            .nav-links { display: none; }
+            footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+    <div class="ticker-inner">
+        <span>DIGITAL MARKETING STRATEGIST</span><span>VIDEO EDITOR</span>
+        <span>CONTENT CREATOR</span><span>MBA CANDIDATE @ LEEDS BECKETT</span>
+        <span>AVAILABLE FOR FREELANCE</span><span>40+ CLIENTS</span>
+        <span>100+ PROJECTS</span><span>BASED IN UK</span>
+        <span>DIGITAL MARKETING STRATEGIST</span><span>VIDEO EDITOR</span>
+        <span>CONTENT CREATOR</span><span>MBA CANDIDATE @ LEEDS BECKETT</span>
+        <span>AVAILABLE FOR FREELANCE</span><span>40+ CLIENTS</span>
+        <span>100+ PROJECTS</span><span>BASED IN UK</span>
+    </div>
+</div>
+
+<!-- NAV -->
+<nav>
+    <a href="#" class="nav-logo">KAMALA<em>.</em>A</a>
+    <ul class="nav-links">
+        <li><a href="#works">WORKS</a></li>
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="#experience">EXP</a></li>
+        <li><a href="#skills">SKILLS</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-left">
+        <div class="hero-top">
+            <div class="hero-label">★ PORTFOLIO 2026 — CHENNAI / LEEDS</div>
+            <h1 class="hero-name">
+                KAMALA<br>ARUNACHALAM<br>
+                <span class="accent">THAMARAI<br>SELVAN</span>
+            </h1>
+            <p class="hero-role">Digital Marketing Strategist &nbsp;·&nbsp; Content Creator &nbsp;·&nbsp; Video Editor &nbsp;·&nbsp; MBA Candidate</p>
+        </div>
+        <div>
+            <div class="hero-stats">
+                <div class="s-box"><span class="n">2+</span><span class="l">Yrs Exp</span></div>
+                <div class="s-box"><span class="n">40+</span><span class="l">Clients</span></div>
+                <div class="s-box"><span class="n">100+</span><span class="l">Projects</span></div>
+                <div class="s-box"><span class="n">35%</span><span class="l">Engagement ↑</span></div>
+            </div>
+            <div class="hero-cta">
+                <a href="mailto:tha.kamalaarunachalam@gmail.com" class="hbtn hbtn-dark">✉ GET IN TOUCH</a>
+                <a href="https://www.linkedin.com/in/kamala-arunachalam-tha/" target="_blank" class="hbtn hbtn-light">LINKEDIN</a>
+                <a href="https://www.behance.net/thakamarunach" target="_blank" class="hbtn hbtn-light">BEHANCE</a>
+                <a href="https://instagram.com/ren_dsgns" target="_blank" class="hbtn hbtn-light">@REN_DSGNS</a>
+            </div>
+        </div>
+    </div>
+    <div class="hero-right">
+        <div class="hero-photo">
+            <img src="profile.jpg" alt="Kamala Arunachalam" />
+            <div class="photo-stamp">KAMALA A. — REN</div>
+        </div>
+        <div class="hero-avail">
+            <div class="a1">◆ OPEN TO WORK ◆</div>
+            <div class="a2">Marketing · Creative · Freelance · MBA 2025</div>
+        </div>
+    </div>
+</section>
+
+<!-- WORKS -->
+<div id="works">
+    <div class="sh">
+        <h2><span class="sp">// 01</span>ORIGINAL WORKS</h2>
+        <span class="sn">GRAPHIC DESIGN & VISUAL ART BY REN</span>
+    </div>
+    <div class="wgrid">
+        <div class="wi wide">
+            <img src="skull-hands-red-threads-artwork.png" alt="Skull" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">SKULL — HANDS / RED THREADS</div>
+        </div>
+        <div class="wi">
+            <img src="angel-statue-red-panel-artwork.png" alt="Angel" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">ANGEL — RED PANEL</div>
+        </div>
+        <div class="wi">
+            <img src="dripping-eye-dark-artwork.png" alt="Dripping Eye" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">DRIPPING EYE</div>
+        </div>
+        <div class="wi">
+            <img src="exist-floating-figure-v1.png" alt="Exist I" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">EXIST I</div>
+        </div>
+        <div class="wi">
+            <img src="exist-floating-figure-v2.png" alt="Exist II" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">EXIST II</div>
+        </div>
+        <div class="wi">
+            <img src="smoke-figure-neon-artwork.png" alt="Smoke" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">SMOKE — NEON FIGURE</div>
+        </div>
+        <div class="wi">
+            <img src="obstacles-chained-hands-artwork.png" alt="Obstacles" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">OBSTACLES — CHAINED HANDS</div>
+        </div>
+        <div class="wi">
+            <img src="pathetic-melting-eyes-artwork.png" alt="Pathetic" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">PATHETIC — MELTING EYES</div>
+        </div>
+        <div class="wi">
+            <img src="pointless-figure-colorblock-artwork.png" alt="Pointless" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">POINTLESS — COLOURBLOCK</div>
+        </div>
+        <div class="wi">
+            <img src="be-here-now-artwork.png" alt="Be Here Now" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">BE HERE NOW</div>
+        </div>
+        <div class="wi">
+            <img src="there-is-only-now-angel-artwork.png" alt="There Is Only Now" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">THERE IS ONLY NOW</div>
+        </div>
+        <div class="wi">
+            <img src="this-is-all-i-have-hand-artwork.png" alt="This Is All I Have" loading="lazy" />
+            <div class="wi-overlay"></div><div class="wi-label">THIS IS ALL I HAVE</div>
+        </div>
+        <div class="wi">
+            <video autoplay muted loop playsinline>
+                <source src="cube.mp4" type="video/mp4" />
+            </video>
+            <div class="wi-overlay"></div><div class="wi-label">CUBE — MOTION</div>
+        </div>
+        <div class="wi wide">
+            <video autoplay muted loop playsinline>
+                <source src="unnamed-video-export.mp4" type="video/mp4" />
+            </video>
+            <div class="wi-overlay"></div><div class="wi-label">UNTITLED — VIDEO EXPORT</div>
+        </div>
+    </div>
+</div>
+
+<!-- CLIENT WORK -->
+<div class="sh sh-rust">
+    <h2><span class="sp">// 02</span>CLIENT WORK</h2>
+    <span class="sn">VIA BEHANCE · 175 VIEWS · 12 APPRECIATIONS · SINCE 2018</span>
+</div>
+<div class="bgrid">
+    <div class="bcol">
+        <div class="bcol-hd">// GRAPHIC DESIGN</div>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">01</div><div class="bi"><div class="bt">Meet &amp; Greet Banner</div><div class="bm">Event Design · 22 Views</div></div><div class="ba">→</div></a>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">02</div><div class="bi"><div class="bt">Social Media Ad</div><div class="bm">Digital Marketing · Photoshop</div></div><div class="ba">→</div></a>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">03</div><div class="bi"><div class="bt">Inter University Event Poster</div><div class="bm">Event Design · Print</div></div><div class="ba">→</div></a>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">04</div><div class="bi"><div class="bt">Event Posters</div><div class="bm">Print Design · 1 Appreciation</div></div><div class="ba">→</div></a>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">05</div><div class="bi"><div class="bt">Tattoo Artist Branding</div><div class="bm">Brand Identity · 10 Views</div></div><div class="ba">→</div></a>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">06</div><div class="bi"><div class="bt">Wedding Invitation</div><div class="bm">Print Design · Photoshop</div></div><div class="ba">→</div></a>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">07</div><div class="bi"><div class="bt">Registration Manual</div><div class="bm">Publication Design</div></div><div class="ba">→</div></a>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">08</div><div class="bi"><div class="bt">Event Pass Design</div><div class="bm">Print · ID Design</div></div><div class="ba">→</div></a>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">09</div><div class="bi"><div class="bt">VIT Certificates</div><div class="bm">Print Design · Institutional</div></div><div class="ba">→</div></a>
+    </div>
+    <div class="bcol">
+        <div class="bcol-hd">// VIDEO WORK</div>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">01</div><div class="bi"><div class="bt">Short Form Video</div><div class="bm">Premiere Pro · 7 Views</div></div><div class="ba">→</div></a>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">02</div><div class="bi"><div class="bt">Short Form Reels</div><div class="bm">After Effects · 10 Views</div></div><div class="ba">→</div></a>
+        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">03</div><div class="bi"><div class="bt">Compilation / Event Aftermovie</div><div class="bm">Post Production · 10 Views</div></div><div class="ba">→</div></a>
+        <div class="bstat"><div class="bn" style="opacity:.3">—</div><div class="bi"><div class="bt">TOOLS</div><div class="bm">Photoshop · Premiere Pro · After Effects</div></div></div>
+        <div class="bstat"><div class="bn" style="opacity:.3">—</div><div class="bi"><div class="bt">SERVICES</div><div class="bm">Video Editing · Starting from US$10</div></div></div>
+        <div class="bstat bstat-rust"><div class="bn" style="color:var(--rust)">◆</div><div class="bi"><div class="bt">MEMBER SINCE 2018</div><div class="bm" style="color:var(--dim)">175 Views · 12 Appreciations · Available for Freelance</div></div></div>
+    </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about">
+    <div class="sh">
+        <h2><span class="sp">// 03</span>ABOUT</h2>
+        <span class="sn">WHO I AM</span>
+    </div>
+    <div class="about-grid">
+        <div class="ac">
+            <p>I turn brands into stories — and stories into measurable growth.</p>
+            <p>I'm Kamala, a Digital Marketing Strategist and Creative Professional with 2+ years of hands-on experience in content strategy, video editing, and brand storytelling.</p>
+            <p>I boosted organic engagement by <strong>35%</strong> and expanded brand reach by <strong>40%</strong> as Director of Content Creation at The Mind Palace — and that's just one chapter of the story.</p>
+            <p>I hold a B.Com (Hons) from Vellore Institute of Technology and am currently pursuing an MBA at Leeds Beckett University, deepening my expertise in strategic marketing, business operations, and global brand management.</p>
+        </div>
+        <div class="ac">
+            <p>Also known as <strong>REN</strong> — a self-taught graphic designer and video editor. Experimental. Conceptual. Unafraid. The dark visual art you see above is mine.</p>
+            <p>Whether you need a brand elevated, content that converts, or video work that hits — I make it happen.</p>
+            <div class="astats">
+                <div class="ast"><span class="an">35%</span><span class="al">Engagement Boost</span></div>
+                <div class="ast"><span class="an">40%</span><span class="al">Brand Reach Growth</span></div>
+                <div class="ast"><span class="an">40+</span><span class="al">Clients Served</span></div>
+                <div class="ast"><span class="an">100+</span><span class="al">Projects Delivered</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EXPERIENCE -->
+<div id="experience">
+    <div class="sh sh-rust">
+        <h2><span class="sp">// 04</span>EXPERIENCE</h2>
+        <span class="sn">WORK HISTORY</span>
+    </div>
+    <div class="elist">
+        <div class="ei">
+            <div class="enum">01</div>
+            <div class="ec">
+                <div class="eco">Freelance</div>
+                <div class="er">Video Editor &amp; Graphic Designer</div>
+                <div class="em">July 2024 – Present · 1 yr 10 months</div>
+                <p class="ed">Collaborated with 40+ clients, producing 100+ successful video projects that boosted brand visibility, audience engagement, and client satisfaction.</p>
+            </div>
+        </div>
+        <div class="ei">
+            <div class="enum">02</div>
+            <div class="ec">
+                <div class="eco">The Mind Palace · 3 Years 3 Months</div>
+                <div class="er">Editing &amp; Post Production Lead</div>
+                <div class="em">May 2024 – Present · Chennai, India</div>
+                <p class="ed">Leading the editing team, overseeing all post-production output and creative quality.</p>
+                <div class="esub">
+                    <div class="esr">Editing Team Lead</div><div class="esm">Aug 2023 – Nov 2024</div>
+                    <div class="esr">Design Intern</div><div class="esm" style="margin-bottom:0">Feb 2023 – Sep 2024</div>
+                </div>
+            </div>
+        </div>
+        <div class="ei">
+            <div class="enum">03</div>
+            <div class="ec">
+                <div class="eco">Raptline</div>
+                <div class="er">Video Editor</div>
+                <div class="em">Feb 2024 – Oct 2024 · 9 months · Chennai, India</div>
+            </div>
+        </div>
+        <div class="ei">
+            <div class="enum">04</div>
+            <div class="ec">
+                <div class="eco">FLSmidth</div>
+                <div class="er">Finance Intern</div>
+                <div class="em">Sep 2023 – Oct 2023 · 2 months · Chennai, India</div>
+            </div>
+        </div>
+        <div class="ei">
+            <div class="enum">05</div>
+            <div class="ec">
+                <div class="eco">Vellore Institute of Technology</div>
+                <div class="er">Creative Team Lead — VITBS DITANS'23</div>
+                <div class="em">Feb 2023 – Mar 2023 · Chennai</div>
+                <p class="ed">Led the technical and design team for VITBS DITANS'23, an inter-college business fest.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SKILLS -->
+<div id="skills">
+    <div class="sh">
+        <h2><span class="sp">// 05</span>SKILLS &amp; CERTIFICATIONS</h2>
+        <span class="sn">CAPABILITIES</span>
+    </div>
+    <div class="sk-bars">
+        <div class="sk-col">
+            <div class="skill-row"><div class="skill-num">01</div><div class="skill-name">Digital Marketing</div><div class="skill-pct">90%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="90"></div></div></div>
+            <div class="skill-row"><div class="skill-num">02</div><div class="skill-name">Content Strategy</div><div class="skill-pct">88%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="88"></div></div></div>
+            <div class="skill-row"><div class="skill-num">03</div><div class="skill-name">Video Editing</div><div class="skill-pct">92%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="92"></div></div></div>
+            <div class="skill-row"><div class="skill-num">04</div><div class="skill-name">Brand Storytelling</div><div class="skill-pct">85%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="85"></div></div></div>
+            <div class="skill-row"><div class="skill-num">05</div><div class="skill-name">Adobe Photoshop</div><div class="skill-pct">88%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="88"></div></div></div>
+            <div class="skill-row"><div class="skill-num">06</div><div class="skill-name">Premiere Pro</div><div class="skill-pct">90%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="90"></div></div></div>
+            <div class="skill-row"><div class="skill-num">07</div><div class="skill-name">After Effects</div><div class="skill-pct">80%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="80"></div></div></div>
+            <div class="skill-row"><div class="skill-num">08</div><div class="skill-name">Graphic Design</div><div class="skill-pct">87%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="87"></div></div></div>
+            <div class="skill-row"><div class="skill-num">09</div><div class="skill-name">SEO</div><div class="skill-pct">75%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="75"></div></div></div>
+        </div>
+        <div class="sk-col">
+            <div class="skill-row"><div class="skill-num">10</div><div class="skill-name">Google Ads</div><div class="skill-pct">72%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="72"></div></div></div>
+            <div class="skill-row"><div class="skill-num">11</div><div class="skill-name">Instagram Strategy</div><div class="skill-pct">90%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="90"></div></div></div>
+            <div class="skill-row"><div class="skill-num">12</div><div class="skill-name">YouTube Strategy</div><div class="skill-pct">83%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="83"></div></div></div>
+            <div class="skill-row"><div class="skill-num">13</div><div class="skill-name">Project Management</div><div class="skill-pct">80%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="80"></div></div></div>
+            <div class="skill-row"><div class="skill-num">14</div><div class="skill-name">Team Leadership</div><div class="skill-pct">85%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="85"></div></div></div>
+            <div class="skill-row"><div class="skill-num">15</div><div class="skill-name">Business Analysis</div><div class="skill-pct">78%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="78"></div></div></div>
+            <div class="skill-row"><div class="skill-num">16</div><div class="skill-name">Strategic Thinking</div><div class="skill-pct">82%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="82"></div></div></div>
+            <div class="skill-row"><div class="skill-num">17</div><div class="skill-name">MCP / Claude AI</div><div class="skill-pct">75%</div><div class="skill-bar-wrap"><div class="skill-bar" data-w="75"></div></div></div>
+        </div>
+    </div>
+    <div class="cert-list">
+        <div class="ci"><div class="cnum">◆</div><div class="cn">Google Prompting Essentials</div></div>
+        <div class="ci"><div class="cnum">◆</div><div class="cn">Adobe Photoshop CC 2015</div></div>
+        <div class="ci"><div class="cnum">◆</div><div class="cn">Business Analysis &amp; Process Management</div></div>
+        <div class="ci"><div class="cnum">◆</div><div class="cn">Google Ads for Beginners</div></div>
+        <div class="ci"><div class="cnum">◆</div><div class="cn">Strategic Thinking</div></div>
+    </div>
+</div>
+
+<!-- EDUCATION -->
+<div>
+    <div class="sh sh-rust">
+        <h2><span class="sp">// 06</span>EDUCATION</h2>
+        <span class="sn">ACADEMIC BACKGROUND</span>
+    </div>
+    <div class="edu-list">
+        <div class="edu-row">
+            <div class="esn">LEEDS BECKETT UNIVERSITY</div>
+            <div class="edt"><div class="edg">MBA — Business Administration, Management &amp; Operations</div><div class="eyr">Jan 2025 – Present</div></div>
+        </div>
+        <div class="edu-row">
+            <div class="esn">VELLORE INSTITUTE OF TECHNOLOGY</div>
+            <div class="edt"><div class="edg">B.Com (Hons) — Business / Commerce, General</div><div class="eyr">Aug 2021 – May 2024</div></div>
+        </div>
+        <div class="edu-row">
+            <div class="esn">SRIMATHI SUNDARAVALLI MEMORIAL SCHOOL</div>
+            <div class="edt"><div class="edg">Secondary Education</div><div class="eyr">Apr 2006 – Apr 2021</div></div>
+        </div>
+        <div class="edu-row">
+            <div class="esn">CSC COMPUTER EDUCATION</div>
+            <div class="edt"><div class="edg">Honours Diploma in Computer Applications</div><div class="eyr">Jan 2018 – Oct 2019</div></div>
+        </div>
+        <div class="edu-row">
+            <div class="esn">DAKSHINA BHARAT HINDI PRACHAR SABHA</div>
+            <div class="edt"><div class="edg">Hindi Language Certification</div><div class="eyr">2015 – 2019</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact">
+    <div class="sh">
+        <h2><span class="sp">// 07</span>LET'S WORK</h2>
+        <span class="sn">GET IN TOUCH</span>
+    </div>
+    <div class="ct-grid">
+        <div class="ct-hl">
+            <h2>LET'S<br>CONNECT<br>&amp; BUILD<br><em>TOGETHER.</em></h2>
+            <p>Elevate your brand, drive traffic, build content that actually lands — I'm ready. Let's make something that hits.</p>
+        </div>
+        <div class="ct-links">
+            <a href="mailto:tha.kamalaarunachalam@gmail.com" class="cl">
+                <div class="cl-ic">✉</div>
+                <div class="cl-info"><span>Email</span><strong>tha.kamalaarunachalam@gmail.com</strong></div>
+            </a>
+            <a href="tel:+917550246699" class="cl">
+                <div class="cl-ic">☎</div>
+                <div class="cl-info"><span>Phone</span><strong>+91 75502 46699</strong></div>
+            </a>
+            <a href="https://www.linkedin.com/in/kamala-arunachalam-tha/" target="_blank" class="cl">
+                <div class="cl-ic">in</div>
+                <div class="cl-info"><span>LinkedIn</span><strong>kamala-arunachalam-tha</strong></div>
+            </a>
+            <a href="https://www.behance.net/thakamarunach" target="_blank" class="cl">
+                <div class="cl-ic">Be</div>
+                <div class="cl-info"><span>Behance Portfolio</span><strong>behance.net/thakamarunach</strong></div>
+            </a>
+            <a href="https://instagram.com/ren_dsgns" target="_blank" class="cl">
+                <div class="cl-ic">@</div>
+                <div class="cl-info"><span>Instagram</span><strong>@ren_dsgns</strong></div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="fl">KAMALA<em>.</em>A — REN</div>
+    <div class="fc">© 2026 · Digital Marketing Strategist · Content Creator · Video Editor</div>
+</footer>
+
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const bar = e.target;
+                bar.style.width = bar.dataset.w + '%';
+                observer.unobserve(bar);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.skill-bar').forEach(bar => observer.observe(bar));
+</script>
+</body>
+</html>
