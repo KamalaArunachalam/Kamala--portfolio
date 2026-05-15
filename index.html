@@ -9,101 +9,113 @@
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --void:   #060606;
-            --dark:   #0e0e0e;
-            --panel:  #111111;
-            --ink:    #e8e0d4;
-            --dim:    rgba(232,224,212,0.45);
-            --rust:   #c8391a;
-            --rust2:  #a02e14;
-            --border: rgba(232,224,212,0.1);
-            --border2:rgba(232,224,212,0.22);
+            --void:    #03030a;
+            --dark:    #06061a;
+            --panel:   #0a0a22;
+            --ink:     #e2f0ff;
+            --dim:     rgba(226,240,255,0.5);
+            --cyan:    #00ffcc;
+            --magenta: #ff2d78;
+            --amber:   #ffaa00;
+            --border:  rgba(0,255,204,0.12);
+            --border2: rgba(0,255,204,0.28);
+            --glow-c:  0 0 10px rgba(0,255,204,0.6), 0 0 22px rgba(0,255,204,0.25);
+            --glow-m:  0 0 10px rgba(255,45,120,0.6), 0 0 22px rgba(255,45,120,0.25);
         }
 
         html { scroll-behavior: smooth; }
+
+        * { cursor: none; }
+        .cursor-dot {
+            position: fixed; width: 8px; height: 8px;
+            background: var(--cyan); border-radius: 50%;
+            pointer-events: none; z-index: 99999;
+            transform: translate(-50%,-50%);
+            box-shadow: var(--glow-c);
+            transition: transform 0.08s, background 0.15s;
+        }
+        .cursor-ring {
+            position: fixed; width: 34px; height: 34px;
+            border: 1.5px solid var(--cyan); border-radius: 50%;
+            pointer-events: none; z-index: 99998;
+            transform: translate(-50%,-50%);
+            transition: width 0.15s, height 0.15s, border-color 0.15s;
+            box-shadow: var(--glow-c);
+        }
+        .cursor-dot.hov { transform: translate(-50%,-50%) scale(2); background: var(--magenta); box-shadow: var(--glow-m); }
+        .cursor-ring.hov { width: 52px; height: 52px; border-color: var(--magenta); box-shadow: var(--glow-m); }
 
         body {
             font-family: 'Space Mono', monospace;
             background: var(--void);
             color: var(--ink);
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* GRAIN */
-        body::before {
-            content: '';
-            position: fixed; inset: 0;
-            pointer-events: none; z-index: 9999;
-            opacity: 0.045;
+        .cyber-grid {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+                linear-gradient(rgba(0,255,204,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,204,0.025) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        .grain {
+            position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.032;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
             background-size: 180px 180px;
         }
-
-        /* SCANLINES */
-        body::after {
-            content: '';
-            position: fixed; inset: 0;
-            pointer-events: none; z-index: 9998;
-            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
+        .scanlines {
+            position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.055) 2px, rgba(0,0,0,0.055) 4px);
         }
 
         /* ── TICKER ── */
         .ticker {
-            background: var(--rust);
-            overflow: hidden; padding: 0.5rem 0;
-            white-space: nowrap;
-            border-bottom: 1px solid rgba(0,0,0,0.4);
+            background: var(--panel); overflow: hidden; padding: 0.55rem 0;
+            white-space: nowrap; border-bottom: 1px solid var(--border2);
+            box-shadow: 0 2px 24px rgba(0,255,204,0.08);
+            position: relative; z-index: 10;
         }
-        .ticker-inner {
-            display: inline-flex;
-            animation: scroll-left 35s linear infinite;
-        }
+        .ticker-inner { display: inline-flex; animation: scroll-left 35s linear infinite; }
         .ticker-inner span {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.5rem; color: var(--ink);
-            letter-spacing: 0.08em; padding: 0 2rem;
+            font-family: 'Press Start 2P', monospace; font-size: 0.5rem;
+            color: var(--cyan); letter-spacing: 0.08em; padding: 0 2rem;
+            text-shadow: var(--glow-c);
         }
-        .ticker-inner span::after { content: ' ◆ '; opacity: 0.5; }
-        @keyframes scroll-left {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+        .ticker-inner span::after { content: ' ◆ '; opacity: 0.4; color: var(--magenta); }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* ── NAV ── */
         nav {
             position: sticky; top: 0; z-index: 100;
-            background: rgba(6,6,6,0.96);
-            backdrop-filter: blur(10px);
+            background: rgba(3,3,10,0.96); backdrop-filter: blur(14px);
             border-bottom: 1px solid var(--border);
             padding: 0.9rem 2rem;
             display: flex; justify-content: space-between; align-items: center;
         }
         .nav-logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.8rem; letter-spacing: 0.06em;
-            color: var(--ink); text-decoration: none;
+            font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem;
+            letter-spacing: 0.06em; color: var(--ink); text-decoration: none;
+            transition: text-shadow 0.2s;
         }
-        .nav-logo em { color: var(--rust); font-style: normal; }
+        .nav-logo:hover { text-shadow: var(--glow-c); }
+        .nav-logo em { color: var(--cyan); font-style: normal; text-shadow: var(--glow-c); }
         .nav-links { display: flex; list-style: none; }
         .nav-links a {
             display: block; padding: 0.5rem 1.1rem;
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.48rem; color: var(--dim);
-            text-decoration: none; text-transform: uppercase;
-            letter-spacing: 0.08em;
-            border-left: 1px solid var(--border);
-            transition: color 0.12s, background 0.12s;
+            font-family: 'Press Start 2P', monospace; font-size: 0.48rem;
+            color: var(--dim); text-decoration: none; text-transform: uppercase;
+            letter-spacing: 0.08em; border-left: 1px solid var(--border);
+            transition: color 0.14s, background 0.14s, text-shadow 0.14s;
         }
         .nav-links li:last-child a { border-right: 1px solid var(--border); }
-        .nav-links a:hover { color: var(--ink); background: rgba(200,57,26,0.1); }
+        .nav-links a:hover { color: var(--cyan); background: rgba(0,255,204,0.05); text-shadow: var(--glow-c); }
 
         /* ── HERO ── */
         .hero {
-            display: grid;
-            grid-template-columns: 1fr 380px;
+            display: grid; grid-template-columns: 1fr 380px;
             border-bottom: 1px solid var(--border);
-            min-height: calc(100vh - 82px);
+            min-height: calc(100vh - 82px); position: relative; z-index: 1;
         }
         .hero-left {
             border-right: 1px solid var(--border);
@@ -112,457 +124,368 @@
         .hero-top { padding: 3rem 3rem 2rem; }
 
         .hero-label {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.48rem; letter-spacing: 0.1em;
-            color: var(--rust); margin-bottom: 2.25rem;
-            display: flex; align-items: center; gap: 0.85rem;
+            font-family: 'Press Start 2P', monospace; font-size: 0.48rem;
+            letter-spacing: 0.1em; color: var(--cyan); margin-bottom: 2.25rem;
+            display: flex; align-items: center; gap: 0.85rem; text-shadow: var(--glow-c);
         }
         .hero-label::before {
-            content: '';
-            display: inline-block; width: 2rem; height: 1px;
-            background: var(--rust);
+            content: ''; display: inline-block; width: 2rem; height: 1px;
+            background: var(--cyan); box-shadow: var(--glow-c);
         }
 
         .hero-name {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(4.5rem, 9vw, 8rem);
-            line-height: 0.88; letter-spacing: -0.01em;
-            margin-bottom: 1.75rem;
+            font-size: clamp(4.5rem,9vw,8rem);
+            line-height: 0.88; letter-spacing: -0.01em; margin-bottom: 1.75rem;
         }
-        .hero-name:hover {
-            animation: name-glitch 0.35s steps(2) 1;
-        }
-        .hero-name .accent { color: var(--rust); }
+        .hero-name:hover { animation: name-glitch 0.42s steps(2) 1; }
+        .hero-name .accent { color: var(--cyan); text-shadow: var(--glow-c); }
 
         @keyframes name-glitch {
-            0%   { text-shadow: 2px 0 #ff0040, -2px 0 #00ffcc; transform: skewX(0deg); }
-            25%  { text-shadow: -3px 0 #ff0040, 3px 0 #00ffcc; transform: skewX(-1deg); }
-            50%  { text-shadow: 3px 0 #ff0040, -3px 0 #00ffcc; transform: skewX(1deg); }
-            75%  { text-shadow: -2px 0 #ff0040, 2px 0 #00ffcc; transform: skewX(-0.5deg); }
+            0%   { text-shadow: 3px 0 var(--magenta), -3px 0 var(--cyan); transform: skewX(0deg); }
+            20%  { text-shadow: -5px 0 var(--magenta), 5px 0 var(--cyan); transform: skewX(-2deg); clip-path: polygon(0 15%,100% 15%,100% 40%,0 40%); }
+            40%  { text-shadow: 5px 0 var(--magenta), -5px 0 var(--cyan); transform: skewX(1.5deg); clip-path: none; }
+            60%  { text-shadow: -3px 0 var(--magenta), 3px 0 var(--cyan); transform: skewX(-1deg); clip-path: polygon(0 60%,100% 60%,100% 80%,0 80%); }
+            80%  { text-shadow: 2px 0 var(--magenta), -2px 0 var(--cyan); transform: skewX(0.5deg); clip-path: none; }
             100% { text-shadow: none; transform: skewX(0deg); }
         }
 
         .hero-role {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.44rem; text-transform: uppercase;
-            letter-spacing: 0.1em; color: var(--dim);
-            border-top: 1px solid var(--border);
-            padding-top: 1.25rem; line-height: 2.2;
+            font-family: 'Press Start 2P', monospace; font-size: 0.44rem;
+            text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim);
+            border-top: 1px solid var(--border); padding-top: 1.25rem; line-height: 2.5;
         }
+        .typed-cursor { color: var(--cyan); animation: blink 0.75s infinite; }
+        @keyframes blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
 
-        .hero-stats {
-            display: grid; grid-template-columns: repeat(4,1fr);
-            border-top: 1px solid var(--border);
-        }
-        .s-box {
-            border-right: 1px solid var(--border);
-            padding: 1.5rem 1rem; text-align: center;
-        }
+        .hero-stats { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid var(--border); }
+        .s-box { border-right: 1px solid var(--border); padding: 1.5rem 1rem; text-align: center; transition: background 0.2s; }
+        .s-box:hover { background: rgba(0,255,204,0.04); }
         .s-box:last-child { border-right: none; }
-        .s-box .n {
-            display: block;
-            font-family: 'VT323', monospace;
-            font-size: 3.5rem; line-height: 1; color: var(--rust);
-        }
-        .s-box .l {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.4rem; text-transform: uppercase;
-            letter-spacing: 0.08em; margin-top: 0.4rem; color: var(--dim);
-        }
+        .s-box .n { display: block; font-family: 'VT323', monospace; font-size: 3.5rem; line-height: 1; color: var(--cyan); text-shadow: var(--glow-c); }
+        .s-box .l { font-family: 'Press Start 2P', monospace; font-size: 0.4rem; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.4rem; color: var(--dim); }
 
         .hero-cta { display: flex; border-top: 1px solid var(--border); }
         .hbtn {
             flex: 1; padding: 1.1rem 0.5rem;
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.42rem; letter-spacing: 0.05em;
-            text-decoration: none; text-align: center;
+            font-family: 'Press Start 2P', monospace; font-size: 0.42rem;
+            letter-spacing: 0.05em; text-decoration: none; text-align: center;
             border-right: 1px solid var(--border); display: block;
-            text-transform: uppercase;
-            transition: background 0.1s, color 0.1s;
+            text-transform: uppercase; transition: all 0.15s;
         }
         .hbtn:last-child { border-right: none; }
-        .hbtn-dark { background: var(--rust); color: var(--ink); }
-        .hbtn-dark:hover { background: var(--rust2); }
+        .hbtn-dark { background: var(--cyan); color: var(--void); font-weight: 700; }
+        .hbtn-dark:hover { background: #00e6b8; box-shadow: 0 0 24px rgba(0,255,204,0.45); transform: translateY(-1px); }
         .hbtn-light { background: transparent; color: var(--dim); }
-        .hbtn-light:hover { background: rgba(200,57,26,0.1); color: var(--ink); }
+        .hbtn-light:hover { background: rgba(0,255,204,0.06); color: var(--cyan); text-shadow: var(--glow-c); }
 
-        .hero-right {
-            background: var(--panel);
-            display: flex; flex-direction: column;
-        }
-        .hero-photo {
-            flex: 1; overflow: hidden; position: relative;
-        }
+        /* ── PROFILE PHOTO ── */
+        .hero-right { background: var(--panel); display: flex; flex-direction: column; min-height: 500px; }
+        .hero-photo { flex: 1; overflow: hidden; position: relative; min-height: 440px; }
         .hero-photo img {
             width: 100%; height: 100%;
-            object-fit: cover; object-position: top center;
+            object-fit: cover; object-position: center 12%;
             display: block;
-            filter: grayscale(20%) contrast(1.15) brightness(0.85);
+            filter: contrast(1.08) brightness(0.88) saturate(0.9);
+            transition: filter 0.35s;
         }
-        /* scanlines on photo */
+        .hero-photo:hover img { filter: contrast(1.12) brightness(0.94) saturate(1.1); }
+        .hero-photo::before {
+            content: ''; position: absolute; top: 14px; left: 14px;
+            width: 38px; height: 38px;
+            border-top: 1.5px solid var(--cyan); border-left: 1.5px solid var(--cyan);
+            box-shadow: -4px -4px 12px rgba(0,255,204,0.35);
+            z-index: 3; pointer-events: none;
+        }
         .hero-photo::after {
-            content: '';
-            position: absolute; inset: 0;
-            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.12) 4px);
-            pointer-events: none;
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px);
+            pointer-events: none; z-index: 1;
         }
+        .photo-corner {
+            position: absolute; bottom: 14px; right: 14px; width: 38px; height: 38px;
+            border-bottom: 1.5px solid var(--cyan); border-right: 1.5px solid var(--cyan);
+            box-shadow: 4px 4px 12px rgba(0,255,204,0.35); z-index: 3; pointer-events: none;
+        }
+        .photo-scan {
+            position: absolute; left: 0; right: 0; top: -40%; height: 40%;
+            background: linear-gradient(transparent, rgba(0,255,204,0.05), transparent);
+            z-index: 2; pointer-events: none; animation: scan-sweep 4s linear infinite;
+        }
+        @keyframes scan-sweep { 0% { top: -40%; } 100% { top: 100%; } }
         .photo-stamp {
             position: absolute; bottom: 1rem; left: 1rem;
-            background: var(--rust); color: var(--ink);
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.42rem; letter-spacing: 0.1em;
-            padding: 0.45rem 0.75rem; z-index: 1;
+            background: var(--cyan); color: var(--void);
+            font-family: 'Press Start 2P', monospace; font-size: 0.42rem;
+            letter-spacing: 0.1em; padding: 0.45rem 0.75rem;
+            z-index: 4; box-shadow: var(--glow-c); font-weight: 700;
         }
-        .hero-avail {
-            border-top: 1px solid var(--border);
-            padding: 1.1rem;
-            background: rgba(200,57,26,0.07);
-            text-align: center;
-        }
+        .hero-avail { border-top: 1px solid var(--border); padding: 1.1rem; background: rgba(0,255,204,0.04); text-align: center; }
         .hero-avail .a1 {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.58rem; color: var(--rust); letter-spacing: 0.1em;
+            font-family: 'Press Start 2P', monospace; font-size: 0.58rem;
+            color: var(--cyan); letter-spacing: 0.1em;
+            animation: avail-pulse 2.2s ease-in-out infinite;
         }
-        .hero-avail .a2 {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.6rem; color: var(--dim); margin-top: 0.5rem;
+        @keyframes avail-pulse {
+            0%,100% { text-shadow: var(--glow-c); }
+            50% { text-shadow: 0 0 20px rgba(0,255,204,0.9), 0 0 40px rgba(0,255,204,0.45); }
+        }
+        .hero-avail .a2 { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--dim); margin-top: 0.5rem; }
+
+        /* ── COSMIC BANNER DIVIDER ── */
+        .cosmic-banner {
+            position: relative; overflow: hidden; height: 200px;
+            border-bottom: 1px solid var(--border);
+        }
+        .cosmic-banner img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.45) saturate(1.3); }
+        .cosmic-banner::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, var(--void) 0%, transparent 30%, transparent 70%, var(--void) 100%),
+                        linear-gradient(0deg, var(--void) 0%, transparent 40%, transparent 60%, var(--void) 100%);
+        }
+        .cosmic-text {
+            position: absolute; inset: 0; z-index: 1;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            letter-spacing: 0.2em; color: var(--cyan);
+            text-shadow: var(--glow-c);
         }
 
         /* ── SECTION HEADER ── */
         .sh {
-            border-bottom: 1px solid var(--border);
-            border-top: 1px solid var(--border);
-            padding: 1.1rem 2rem;
-            display: flex; align-items: baseline; justify-content: space-between;
-            background: var(--dark);
+            border-bottom: 1px solid var(--border); border-top: 1px solid var(--border);
+            padding: 1.1rem 2rem; display: flex; align-items: baseline; justify-content: space-between;
+            background: var(--dark); position: relative;
         }
-        .sh h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(2.25rem, 4.5vw, 3.75rem);
-            letter-spacing: 0.03em; line-height: 1; color: var(--ink);
-        }
-        .sh h2 .sp {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.65rem; color: var(--rust);
-            margin-right: 0.85rem; letter-spacing: 0.05em;
-        }
-        .sh .sn {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.4rem; letter-spacing: 0.08em; color: var(--dim);
-        }
-        .sh-rust { background: var(--rust); border-color: rgba(0,0,0,0.2); }
-        .sh-rust h2 { color: var(--ink); }
-        .sh-rust .sp { color: rgba(255,255,255,0.45); }
-        .sh-rust .sn { color: rgba(255,255,255,0.55); }
+        .sh::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--cyan); box-shadow: var(--glow-c); }
+        .sh h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.25rem,4.5vw,3.75rem); letter-spacing: 0.03em; line-height: 1; color: var(--ink); }
+        .sh h2 .sp { font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: var(--cyan); margin-right: 0.85rem; letter-spacing: 0.05em; text-shadow: var(--glow-c); }
+        .sh .sn { font-family: 'Press Start 2P', monospace; font-size: 0.4rem; letter-spacing: 0.08em; color: var(--dim); }
+        .sh-alt { background: var(--panel); }
+        .sh-alt::before { background: var(--magenta); box-shadow: var(--glow-m); }
+        .sh-alt h2 .sp { color: var(--magenta); text-shadow: var(--glow-m); }
 
         /* ── WORKS GRID ── */
-        .wgrid {
-            display: grid;
-            grid-template-columns: repeat(3,1fr);
-        }
+        .wgrid { display: grid; grid-template-columns: repeat(3,1fr); }
         .wi {
             position: relative; overflow: hidden;
-            border-right: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
             aspect-ratio: 1; cursor: pointer;
         }
         .wi.wide { grid-column: span 2; aspect-ratio: 2/1; }
+        .wi.tall { grid-row: span 2; aspect-ratio: 1/2; }
         .wi img, .wi video {
-            width: 100%; height: 100%;
-            object-fit: cover; display: block;
-            filter: grayscale(30%) contrast(1.1);
-            transition: transform 0.3s, filter 0.3s;
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            filter: grayscale(20%) contrast(1.08) saturate(0.8);
+            transition: transform 0.35s, filter 0.35s;
         }
-        .wi:hover img, .wi:hover video {
-            transform: scale(1.05);
-            filter: grayscale(0%) contrast(1.15);
-        }
+        .wi:hover img, .wi:hover video { transform: scale(1.06); filter: grayscale(0%) contrast(1.15) saturate(1.35); }
         .wi-overlay {
             position: absolute; inset: 0;
-            background: var(--rust); opacity: 0;
-            transition: opacity 0.2s; mix-blend-mode: multiply;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            opacity: 0; transition: opacity 0.22s; mix-blend-mode: color;
         }
-        .wi:hover .wi-overlay { opacity: 0.5; }
+        .wi:hover .wi-overlay { opacity: 0.3; }
         .wi-label {
             position: absolute; bottom: 0; left: 0; right: 0;
-            background: var(--void); color: var(--ink);
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.42rem; letter-spacing: 0.05em;
-            padding: 0.65rem 0.85rem;
-            border-top: 1px solid var(--rust);
+            background: rgba(3,3,10,0.92); color: var(--cyan);
+            font-family: 'Press Start 2P', monospace; font-size: 0.42rem;
+            letter-spacing: 0.05em; padding: 0.65rem 0.85rem;
+            border-top: 1px solid var(--cyan);
+            box-shadow: 0 -3px 12px rgba(0,255,204,0.2);
             transform: translateY(100%); transition: transform 0.2s;
         }
         .wi:hover .wi-label { transform: translateY(0); }
+        .wi::before {
+            content: ''; position: absolute; top: 8px; left: 8px; width: 18px; height: 18px;
+            border-top: 1.5px solid var(--cyan); border-left: 1.5px solid var(--cyan);
+            opacity: 0; transition: opacity 0.2s; z-index: 2; pointer-events: none;
+            box-shadow: var(--glow-c);
+        }
+        .wi:hover::before { opacity: 1; }
 
-        /* ── CLIENT WORK ── */
-        .bgrid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            border-bottom: 1px solid var(--border);
+        /* ── CLIENT SHOWCASE GRID ── */
+        .cgrid { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1px solid var(--border); }
+        .ci-card {
+            position: relative; overflow: hidden;
+            border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            background: var(--panel); cursor: pointer;
         }
-        .bcol { border-right: 1px solid var(--border); }
-        .bcol:last-child { border-right: none; }
-        .bcol-hd {
-            background: var(--dark);
-            border-bottom: 1px solid var(--border);
-            padding: 0.75rem 1.75rem;
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.55rem; letter-spacing: 0.1em;
-            color: var(--rust);
+        .ci-card:nth-child(3n) { border-right: none; }
+        .ci-card-media {
+            width: 100%; aspect-ratio: 16/9; overflow: hidden; position: relative;
         }
-        .bproj {
-            display: flex; align-items: center; gap: 1rem;
-            padding: 1rem 1.75rem;
-            border-bottom: 1px solid var(--border);
-            text-decoration: none; color: var(--ink);
-            transition: background 0.1s;
+        .ci-card-media img, .ci-card-media video {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: saturate(0.7) contrast(1.05);
+            transition: transform 0.35s, filter 0.35s;
         }
-        .bproj:last-child { border-bottom: none; }
-        .bproj:hover { background: rgba(200,57,26,0.07); }
-        .bn {
-            font-family: 'VT323', monospace;
-            font-size: 2rem; color: var(--rust); line-height: 1;
-            min-width: 2.5rem;
+        .ci-card:hover .ci-card-media img,
+        .ci-card:hover .ci-card-media video { transform: scale(1.06); filter: saturate(1.2) contrast(1.1); }
+        .ci-card-media::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            opacity: 0; transition: opacity 0.22s; mix-blend-mode: color;
         }
-        .bi { flex: 1; }
-        .bt {
-            font-size: 0.72rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.04em;
-        }
-        .bm { font-size: 0.6rem; color: var(--dim); margin-top: 0.15rem; }
-        .ba { font-size: 0.9rem; color: var(--dim); transition: color 0.1s; }
-        .bproj:hover .ba { color: var(--rust); }
+        .ci-card:hover .ci-card-media::after { opacity: 0.2; }
 
-        .bstat {
-            display: flex; align-items: center; gap: 1rem;
-            padding: 1rem 1.75rem;
-            border-bottom: 1px solid var(--border);
-            background: rgba(255,255,255,0.02);
+        /* logo cards */
+        .ci-card.logo-card .ci-card-media {
+            background: var(--dark); display: flex; align-items: center; justify-content: center; padding: 2rem;
         }
-        .bstat:last-child { border-bottom: none; }
-        .bstat-rust { background: rgba(200,57,26,0.12); }
+        .ci-card.logo-card .ci-card-media img { object-fit: contain; filter: none; }
+        .ci-card.logo-card:hover .ci-card-media img { filter: drop-shadow(0 0 12px rgba(0,255,204,0.5)); }
+
+        .ci-card-info {
+            padding: 1rem 1.25rem; border-top: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .ci-card-name {
+            font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem;
+            letter-spacing: 0.05em; color: var(--ink);
+        }
+        .ci-card-type {
+            font-family: 'Press Start 2P', monospace; font-size: 0.38rem;
+            color: var(--magenta); letter-spacing: 0.06em; text-shadow: var(--glow-m);
+        }
+        .ci-card-tag {
+            font-family: 'Press Start 2P', monospace; font-size: 0.36rem;
+            color: var(--dim); padding: 0.25rem 0.5rem;
+            border: 1px solid var(--border);
+        }
+
+        /* ── SOCIAL MEDIA GRID ── */
+        .smgrid { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1px solid var(--border); }
+        .sm-card {
+            position: relative; overflow: hidden;
+            border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            aspect-ratio: 1; cursor: pointer;
+        }
+        .sm-card.wide { grid-column: span 2; aspect-ratio: 2/1; }
+        .sm-card img, .sm-card video {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: saturate(0.8) contrast(1.05);
+            transition: transform 0.35s, filter 0.35s;
+        }
+        .sm-card:hover img, .sm-card:hover video { transform: scale(1.05); filter: saturate(1.3) contrast(1.1); }
+        .sm-card::after {
+            content: attr(data-label);
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: rgba(3,3,10,0.9); color: var(--magenta);
+            font-family: 'Press Start 2P', monospace; font-size: 0.38rem;
+            padding: 0.55rem 0.75rem; letter-spacing: 0.05em;
+            border-top: 1px solid var(--magenta);
+            transform: translateY(100%); transition: transform 0.2s;
+        }
+        .sm-card:hover::after { transform: translateY(0); }
+        .sm-card::before {
+            content: ''; position: absolute; top: 8px; left: 8px; width: 18px; height: 18px;
+            border-top: 1.5px solid var(--magenta); border-left: 1.5px solid var(--magenta);
+            opacity: 0; transition: opacity 0.2s; z-index: 2; pointer-events: none;
+            box-shadow: var(--glow-m);
+        }
+        .sm-card:hover::before { opacity: 1; }
 
         /* ── ABOUT ── */
-        .about-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            border-bottom: 1px solid var(--border);
-        }
-        .ac {
-            border-right: 1px solid var(--border);
-            padding: 3rem;
-        }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+        .ac { border-right: 1px solid var(--border); padding: 3rem; }
         .ac:last-child { border-right: none; }
-        .ac p {
-            color: rgba(232,224,212,0.7);
-            line-height: 2; margin-bottom: 1rem;
-            font-size: 0.8rem;
-        }
+        .ac p { color: rgba(226,240,255,0.7); line-height: 2; margin-bottom: 1rem; font-size: 0.8rem; }
         .ac p:last-child { margin-bottom: 0; }
-        .ac p strong { color: var(--rust); }
-
-        .astats {
-            display: grid; grid-template-columns: 1fr 1fr;
-            border: 1px solid var(--border);
-            margin-top: 2rem;
-        }
-        .ast {
-            text-align: center; padding: 1.5rem 1rem;
-            border-right: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
+        .ac p strong { color: var(--cyan); text-shadow: var(--glow-c); }
+        .astats { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--border); margin-top: 2rem; }
+        .ast { text-align: center; padding: 1.5rem 1rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); transition: background 0.2s; }
+        .ast:hover { background: rgba(0,255,204,0.04); }
         .ast:nth-child(2n) { border-right: none; }
         .ast:nth-last-child(-n+2) { border-bottom: none; }
-        .ast .an {
-            display: block;
-            font-family: 'VT323', monospace;
-            font-size: 3rem; color: var(--rust);
-        }
-        .ast .al {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.4rem; text-transform: uppercase;
-            letter-spacing: 0.08em; color: var(--dim);
-        }
+        .ast .an { display: block; font-family: 'VT323', monospace; font-size: 3rem; color: var(--cyan); text-shadow: var(--glow-c); }
+        .ast .al { font-family: 'Press Start 2P', monospace; font-size: 0.4rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); }
 
         /* ── EXPERIENCE ── */
         .elist { border-bottom: 1px solid var(--border); }
-        .ei {
-            display: grid; grid-template-columns: 68px 1fr;
-            border-bottom: 1px solid var(--border);
-        }
+        .ei { display: grid; grid-template-columns: 68px 1fr; border-bottom: 1px solid var(--border); transition: background 0.14s; }
+        .ei:hover { background: rgba(0,255,204,0.02); }
         .ei:last-child { border-bottom: none; }
         .enum {
-            background: var(--rust);
-            font-family: 'VT323', monospace; font-size: 2.5rem;
-            color: var(--ink);
+            background: linear-gradient(180deg, rgba(0,255,204,0.14), rgba(0,255,204,0.04));
+            font-family: 'VT323', monospace; font-size: 2.5rem; color: var(--cyan);
             display: flex; align-items: center; justify-content: center;
-            border-right: 1px solid rgba(0,0,0,0.3);
+            border-right: 1px solid var(--border); text-shadow: var(--glow-c);
         }
         .ec { padding: 1.75rem 2.25rem; }
-        .eco {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.42rem; text-transform: uppercase;
-            letter-spacing: 0.1em; color: var(--rust); margin-bottom: 0.55rem;
-        }
-        .er {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.75rem; letter-spacing: 0.03em;
-            line-height: 1.1; margin-bottom: 0.35rem;
-        }
-        .em {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.6rem; color: var(--dim); margin-bottom: 0.75rem;
-        }
-        .ed { font-size: 0.75rem; line-height: 1.9; color: rgba(232,224,212,0.55); }
-        .esub { margin-top: 1rem; padding-left: 1rem; border-left: 2px solid var(--rust); }
+        .eco { font-family: 'Press Start 2P', monospace; font-size: 0.42rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--magenta); margin-bottom: 0.55rem; text-shadow: var(--glow-m); }
+        .er { font-family: 'Bebas Neue', sans-serif; font-size: 1.75rem; letter-spacing: 0.03em; line-height: 1.1; margin-bottom: 0.35rem; }
+        .em { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--dim); margin-bottom: 0.75rem; }
+        .ed { font-size: 0.75rem; line-height: 1.9; color: rgba(226,240,255,0.55); }
+        .esub { margin-top: 1rem; padding-left: 1rem; border-left: 2px solid var(--cyan); box-shadow: -3px 0 10px rgba(0,255,204,0.2); }
         .esr { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.1rem; }
         .esm { font-size: 0.6rem; color: var(--dim); margin-bottom: 0.5rem; font-family: 'Space Mono', monospace; }
 
-        /* ── SKILLS — PIXEL BARS ── */
-        .sk-bars {
-            padding: 2.5rem 0;
-            display: grid; grid-template-columns: 1fr 1fr;
-        }
+        /* ── SKILLS ── */
+        .sk-bars { padding: 2.5rem 0; display: grid; grid-template-columns: 1fr 1fr; }
         .sk-col { padding: 0 3rem; border-right: 1px solid var(--border); }
         .sk-col:last-child { border-right: none; }
-
-        .skill-row {
-            display: grid;
-            grid-template-columns: 2.25rem 1fr auto;
-            align-items: center; gap: 1rem;
-            padding: 0.9rem 0;
-            border-bottom: 1px solid var(--border);
-        }
+        .skill-row { display: grid; grid-template-columns: 2.25rem 1fr auto; align-items: center; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid var(--border); }
         .skill-row:last-child { border-bottom: none; }
-        .skill-num {
-            font-family: 'VT323', monospace;
-            font-size: 1.5rem; color: var(--rust); text-align: right;
-            line-height: 1;
-        }
-        .skill-name {
-            font-size: 0.65rem; text-transform: uppercase;
-            letter-spacing: 0.06em; color: var(--ink);
-        }
-        .skill-pct {
-            font-family: 'VT323', monospace;
-            font-size: 1.6rem; color: var(--rust); line-height: 1;
-        }
-        .skill-bar-wrap {
-            grid-column: 2 / 4;
-            height: 3px;
-            background: rgba(255,255,255,0.06);
-            margin-top: -0.45rem;
-            overflow: hidden;
-        }
-        .skill-bar {
-            height: 100%; background: var(--rust);
-            transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
-            width: 0;
-        }
+        .skill-num { font-family: 'VT323', monospace; font-size: 1.5rem; color: var(--magenta); text-align: right; line-height: 1; text-shadow: var(--glow-m); }
+        .skill-name { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink); }
+        .skill-pct { font-family: 'VT323', monospace; font-size: 1.6rem; color: var(--cyan); line-height: 1; text-shadow: var(--glow-c); }
+        .skill-bar-wrap { grid-column: 2 / 4; height: 4px; background: rgba(0,255,204,0.08); margin-top: -0.45rem; overflow: hidden; border-radius: 2px; }
+        .skill-bar { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--magenta)); box-shadow: 0 0 10px rgba(0,255,204,0.7); transition: width 1.4s cubic-bezier(0.4,0,0.2,1); width: 0; border-radius: 2px; }
 
         /* ── CERTS ── */
         .cert-list { border-top: 1px solid var(--border); }
-        .ci {
-            display: flex; align-items: center; gap: 1.5rem;
-            padding: 1rem 2rem;
-            border-bottom: 1px solid var(--border);
-        }
-        .ci:last-child { border-bottom: none; }
-        .ci .cnum {
-            font-family: 'VT323', monospace;
-            font-size: 1.4rem; color: var(--rust);
-        }
-        .ci .cn {
-            font-size: 0.72rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.04em;
-        }
+        .ci-cert { display: flex; align-items: center; gap: 1.5rem; padding: 1rem 2rem; border-bottom: 1px solid var(--border); transition: background 0.14s, transform 0.1s; }
+        .ci-cert:hover { background: rgba(0,255,204,0.04); transform: translateX(5px); }
+        .ci-cert:last-child { border-bottom: none; }
+        .ci-cert .cnum { font-family: 'VT323', monospace; font-size: 1.4rem; color: var(--cyan); text-shadow: var(--glow-c); }
+        .ci-cert .cn { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
 
         /* ── EDUCATION ── */
         .edu-list { border-bottom: 1px solid var(--border); }
-        .edu-row {
-            display: grid; grid-template-columns: 1fr 1fr;
-            border-bottom: 1px solid var(--border);
-        }
+        .edu-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); transition: background 0.14s; }
+        .edu-row:hover { background: rgba(0,255,204,0.02); }
         .edu-row:last-child { border-bottom: none; }
-        .esn {
-            padding: 1.5rem 2rem; border-right: 1px solid var(--border);
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.2rem; letter-spacing: 0.04em;
-            display: flex; align-items: center;
-        }
+        .esn { padding: 1.5rem 2rem; border-right: 1px solid var(--border); font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.04em; display: flex; align-items: center; }
         .edt { padding: 1.5rem 2rem; display: flex; flex-direction: column; justify-content: center; }
         .edg { font-size: 0.72rem; font-weight: 700; margin-bottom: 0.4rem; }
-        .eyr {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.42rem; color: var(--dim);
-        }
+        .eyr { font-family: 'Press Start 2P', monospace; font-size: 0.42rem; color: var(--cyan); text-shadow: var(--glow-c); }
 
         /* ── CONTACT ── */
-        .ct-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            border-bottom: 1px solid var(--border);
-        }
-        .ct-hl {
-            border-right: 1px solid var(--border);
-            padding: 3.5rem 3rem;
-            background: rgba(200,57,26,0.04);
-        }
-        .ct-hl h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(3rem,6vw,5.5rem);
-            line-height: 0.9; color: var(--ink);
-            letter-spacing: -0.01em; margin-bottom: 2rem;
-        }
-        .ct-hl h2 em { color: var(--rust); font-style: normal; }
-        .ct-hl p { font-size: 0.75rem; color: rgba(232,224,212,0.6); line-height: 2; }
-        .ct-links { }
-        .cl {
-            display: flex; align-items: center; gap: 1.25rem;
-            padding: 1.35rem 2rem;
-            border-bottom: 1px solid var(--border);
-            text-decoration: none; color: var(--ink);
-            transition: background 0.1s;
-        }
+        .ct-grid { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+        .ct-hl { border-right: 1px solid var(--border); padding: 3.5rem 3rem; background: rgba(0,255,204,0.02); position: relative; overflow: hidden; }
+        .ct-hl::before { content: 'CONNECT'; position: absolute; right: -30px; top: 50%; transform: translateY(-50%) rotate(90deg); font-family: 'Bebas Neue', sans-serif; font-size: 6rem; color: rgba(0,255,204,0.04); letter-spacing: 0.1em; pointer-events: none; }
+        .ct-hl h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem,6vw,5.5rem); line-height: 0.9; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 2rem; }
+        .ct-hl h2 em { color: var(--cyan); font-style: normal; text-shadow: var(--glow-c); }
+        .ct-hl p { font-size: 0.75rem; color: rgba(226,240,255,0.6); line-height: 2; }
+        .cl { display: flex; align-items: center; gap: 1.25rem; padding: 1.35rem 2rem; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--ink); transition: all 0.14s; }
         .cl:last-child { border-bottom: none; }
-        .cl:hover { background: rgba(200,57,26,0.07); }
-        .cl-ic {
-            font-family: 'VT323', monospace;
-            font-size: 1.5rem; color: var(--rust);
-            width: 2.5rem; text-align: center; line-height: 1;
-        }
-        .cl-info span {
-            display: block;
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.38rem; text-transform: uppercase;
-            letter-spacing: 0.08em; color: var(--dim); margin-bottom: 0.25rem;
-        }
+        .cl:hover { background: rgba(0,255,204,0.05); transform: translateX(5px); border-left: 2px solid var(--cyan); padding-left: calc(2rem - 2px); }
+        .cl-ic { font-family: 'VT323', monospace; font-size: 1.5rem; color: var(--cyan); width: 2.5rem; text-align: center; line-height: 1; text-shadow: var(--glow-c); }
+        .cl-info span { display: block; font-family: 'Press Start 2P', monospace; font-size: 0.38rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin-bottom: 0.25rem; }
         .cl-info strong { font-size: 0.75rem; font-weight: 700; }
 
         /* ── FOOTER ── */
-        footer {
-            background: var(--dark);
-            border-top: 1px solid var(--border);
-            padding: 1.5rem 2rem;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .fl {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.6rem; color: var(--ink); letter-spacing: 0.05em;
-        }
-        .fl em { color: var(--rust); font-style: normal; }
-        .fc {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.4rem; color: var(--dim);
-            text-transform: uppercase; letter-spacing: 0.1em;
-        }
+        footer { background: var(--dark); border-top: 1px solid var(--border); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+        footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--cyan), var(--magenta), var(--cyan), transparent); box-shadow: 0 0 12px rgba(0,255,204,0.4); }
+        .fl { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--ink); letter-spacing: 0.05em; }
+        .fl em { color: var(--cyan); font-style: normal; text-shadow: var(--glow-c); }
+        .fc { font-family: 'Press Start 2P', monospace; font-size: 0.4rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; }
 
         /* ── RESPONSIVE ── */
         @media (max-width: 960px) {
             .hero { grid-template-columns: 1fr; min-height: auto; }
-            .hero-right { height: 420px; }
+            .hero-right { height: 460px; min-height: unset; }
             .hero-stats { grid-template-columns: repeat(2,1fr); }
             .wgrid { grid-template-columns: repeat(2,1fr); }
             .wi.wide { grid-column: span 1; aspect-ratio: 1; }
-            .bgrid { grid-template-columns: 1fr; }
-            .bcol { border-right: none; border-bottom: 1px solid var(--border); }
+            .wi.tall { grid-row: span 1; aspect-ratio: 1; }
+            .cgrid { grid-template-columns: 1fr 1fr; }
+            .ci-card:nth-child(3n) { border-right: 1px solid var(--border); }
+            .ci-card:nth-child(2n) { border-right: none; }
+            .smgrid { grid-template-columns: 1fr 1fr; }
+            .sm-card.wide { grid-column: span 1; aspect-ratio: 1; }
             .about-grid { grid-template-columns: 1fr; }
             .ac { border-right: none; border-bottom: 1px solid var(--border); }
             .sk-bars { grid-template-columns: 1fr; }
@@ -574,10 +497,19 @@
             .esn { border-right: none; border-bottom: 1px solid var(--border); }
             .nav-links { display: none; }
             footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+            .cursor-dot, .cursor-ring { display: none; }
+            * { cursor: auto; }
+            .cosmic-banner { height: 130px; }
         }
     </style>
 </head>
 <body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cyber-grid"></div>
+<div class="grain"></div>
+<div class="scanlines"></div>
 
 <!-- TICKER -->
 <div class="ticker">
@@ -598,6 +530,8 @@
     <a href="#" class="nav-logo">KAMALA<em>.</em>A</a>
     <ul class="nav-links">
         <li><a href="#works">WORKS</a></li>
+        <li><a href="#clients">CLIENTS</a></li>
+        <li><a href="#social">SOCIAL</a></li>
         <li><a href="#about">ABOUT</a></li>
         <li><a href="#experience">EXP</a></li>
         <li><a href="#skills">SKILLS</a></li>
@@ -614,14 +548,14 @@
                 KAMALA<br>ARUNACHALAM<br>
                 <span class="accent">THAMARAI<br>SELVAN</span>
             </h1>
-            <p class="hero-role">Digital Marketing Strategist &nbsp;·&nbsp; Content Creator &nbsp;·&nbsp; Video Editor &nbsp;·&nbsp; MBA Candidate</p>
+            <p class="hero-role">Digital Marketing Strategist &nbsp;·&nbsp; Content Creator &nbsp;·&nbsp; Video Editor &nbsp;·&nbsp; MBA Candidate<span class="typed-cursor">_</span></p>
         </div>
         <div>
             <div class="hero-stats">
-                <div class="s-box"><span class="n">2+</span><span class="l">Yrs Exp</span></div>
-                <div class="s-box"><span class="n">40+</span><span class="l">Clients</span></div>
-                <div class="s-box"><span class="n">100+</span><span class="l">Projects</span></div>
-                <div class="s-box"><span class="n">35%</span><span class="l">Engagement ↑</span></div>
+                <div class="s-box"><span class="n" data-target="2" data-suffix="+">0+</span><span class="l">Yrs Exp</span></div>
+                <div class="s-box"><span class="n" data-target="40" data-suffix="+">0+</span><span class="l">Clients</span></div>
+                <div class="s-box"><span class="n" data-target="100" data-suffix="+">0+</span><span class="l">Projects</span></div>
+                <div class="s-box"><span class="n" data-target="35" data-suffix="%">0%</span><span class="l">Engagement ↑</span></div>
             </div>
             <div class="hero-cta">
                 <a href="mailto:tha.kamalaarunachalam@gmail.com" class="hbtn hbtn-dark">✉ GET IN TOUCH</a>
@@ -633,7 +567,9 @@
     </div>
     <div class="hero-right">
         <div class="hero-photo">
-            <img src="profile.jpg" alt="Kamala Arunachalam" />
+            <img src="me/profile-photo-headshot.jpg" alt="Kamala Arunachalam" />
+            <div class="photo-corner"></div>
+            <div class="photo-scan"></div>
             <div class="photo-stamp">KAMALA A. — REN</div>
         </div>
         <div class="hero-avail">
@@ -643,7 +579,7 @@
     </div>
 </section>
 
-<!-- WORKS -->
+<!-- ORIGINAL WORKS -->
 <div id="works">
     <div class="sh">
         <h2><span class="sp">// 01</span>ORIGINAL WORKS</h2>
@@ -651,101 +587,272 @@
     </div>
     <div class="wgrid">
         <div class="wi wide">
-            <img src="skull-hands-red-threads-artwork.png" alt="Skull" loading="lazy" />
+            <img src="artwork/skull-hands-red-threads-artwork.png" alt="Skull" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">SKULL — HANDS / RED THREADS</div>
         </div>
         <div class="wi">
-            <img src="angel-statue-red-panel-artwork.png" alt="Angel" loading="lazy" />
+            <img src="artwork/angel-statue-red-panel-artwork.png" alt="Angel" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">ANGEL — RED PANEL</div>
         </div>
         <div class="wi">
-            <img src="dripping-eye-dark-artwork.png" alt="Dripping Eye" loading="lazy" />
+            <img src="artwork/dripping-eye-dark-artwork.png" alt="Dripping Eye" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">DRIPPING EYE</div>
         </div>
         <div class="wi">
-            <img src="exist-floating-figure-v1.png" alt="Exist I" loading="lazy" />
+            <img src="artwork/exist-floating-figure-v1.png" alt="Exist I" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">EXIST I</div>
         </div>
         <div class="wi">
-            <img src="exist-floating-figure-v2.png" alt="Exist II" loading="lazy" />
+            <img src="artwork/exist-floating-figure-v2.png" alt="Exist II" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">EXIST II</div>
         </div>
         <div class="wi">
-            <img src="smoke-figure-neon-artwork.png" alt="Smoke" loading="lazy" />
+            <img src="artwork/smoke-figure-neon-artwork.png" alt="Smoke" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">SMOKE — NEON FIGURE</div>
         </div>
         <div class="wi">
-            <img src="obstacles-chained-hands-artwork.png" alt="Obstacles" loading="lazy" />
+            <img src="artwork/obstacles-chained-hands-artwork.png" alt="Obstacles" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">OBSTACLES — CHAINED HANDS</div>
         </div>
         <div class="wi">
-            <img src="pathetic-melting-eyes-artwork.png" alt="Pathetic" loading="lazy" />
+            <img src="artwork/pathetic-melting-eyes-artwork.png" alt="Pathetic" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">PATHETIC — MELTING EYES</div>
         </div>
         <div class="wi">
-            <img src="pointless-figure-colorblock-artwork.png" alt="Pointless" loading="lazy" />
+            <img src="artwork/pointless-figure-colorblock-artwork.png" alt="Pointless" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">POINTLESS — COLOURBLOCK</div>
         </div>
         <div class="wi">
-            <img src="be-here-now-artwork.png" alt="Be Here Now" loading="lazy" />
+            <img src="artwork/be-here-now-artwork.png" alt="Be Here Now" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">BE HERE NOW</div>
         </div>
         <div class="wi">
-            <img src="there-is-only-now-angel-artwork.png" alt="There Is Only Now" loading="lazy" />
+            <img src="artwork/there-is-only-now-angel-artwork.png" alt="There Is Only Now" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">THERE IS ONLY NOW</div>
         </div>
         <div class="wi">
-            <img src="this-is-all-i-have-hand-artwork.png" alt="This Is All I Have" loading="lazy" />
+            <img src="artwork/this-is-all-i-have-hand-artwork.png" alt="This Is All I Have" loading="lazy" />
             <div class="wi-overlay"></div><div class="wi-label">THIS IS ALL I HAVE</div>
         </div>
         <div class="wi">
             <video autoplay muted loop playsinline>
-                <source src="cube.mp4" type="video/mp4" />
+                <source src="artwork/cube.mp4" type="video/mp4" />
             </video>
             <div class="wi-overlay"></div><div class="wi-label">CUBE — MOTION</div>
         </div>
         <div class="wi wide">
             <video autoplay muted loop playsinline>
-                <source src="unnamed-video-export.mp4" type="video/mp4" />
+                <source src="artwork/unnamed-video-export.mp4" type="video/mp4" />
             </video>
             <div class="wi-overlay"></div><div class="wi-label">UNTITLED — VIDEO EXPORT</div>
         </div>
     </div>
 </div>
 
-<!-- CLIENT WORK -->
-<div class="sh sh-rust">
-    <h2><span class="sp">// 02</span>CLIENT WORK</h2>
-    <span class="sn">VIA BEHANCE · 175 VIEWS · 12 APPRECIATIONS · SINCE 2018</span>
+<!-- COSMIC BANNER DIVIDER -->
+<div class="cosmic-banner">
+    <img src="cosmic-space-banner.jpg" alt="" />
+    <div class="cosmic-text">CLIENT WORK &amp; CAMPAIGNS</div>
 </div>
-<div class="bgrid">
-    <div class="bcol">
-        <div class="bcol-hd">// GRAPHIC DESIGN</div>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">01</div><div class="bi"><div class="bt">Meet &amp; Greet Banner</div><div class="bm">Event Design · 22 Views</div></div><div class="ba">→</div></a>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">02</div><div class="bi"><div class="bt">Social Media Ad</div><div class="bm">Digital Marketing · Photoshop</div></div><div class="ba">→</div></a>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">03</div><div class="bi"><div class="bt">Inter University Event Poster</div><div class="bm">Event Design · Print</div></div><div class="ba">→</div></a>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">04</div><div class="bi"><div class="bt">Event Posters</div><div class="bm">Print Design · 1 Appreciation</div></div><div class="ba">→</div></a>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">05</div><div class="bi"><div class="bt">Tattoo Artist Branding</div><div class="bm">Brand Identity · 10 Views</div></div><div class="ba">→</div></a>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">06</div><div class="bi"><div class="bt">Wedding Invitation</div><div class="bm">Print Design · Photoshop</div></div><div class="ba">→</div></a>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">07</div><div class="bi"><div class="bt">Registration Manual</div><div class="bm">Publication Design</div></div><div class="ba">→</div></a>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">08</div><div class="bi"><div class="bt">Event Pass Design</div><div class="bm">Print · ID Design</div></div><div class="ba">→</div></a>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">09</div><div class="bi"><div class="bt">VIT Certificates</div><div class="bm">Print Design · Institutional</div></div><div class="ba">→</div></a>
+
+<!-- CLIENT SHOWCASE -->
+<div id="clients">
+    <div class="sh sh-alt">
+        <h2><span class="sp">// 02</span>CLIENT SHOWCASE</h2>
+        <span class="sn">VIDEO · BRANDING · SOCIAL MEDIA</span>
     </div>
-    <div class="bcol">
-        <div class="bcol-hd">// VIDEO WORK</div>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">01</div><div class="bi"><div class="bt">Short Form Video</div><div class="bm">Premiere Pro · 7 Views</div></div><div class="ba">→</div></a>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">02</div><div class="bi"><div class="bt">Short Form Reels</div><div class="bm">After Effects · 10 Views</div></div><div class="ba">→</div></a>
-        <a href="https://www.behance.net/thakamarunach" target="_blank" class="bproj"><div class="bn">03</div><div class="bi"><div class="bt">Compilation / Event Aftermovie</div><div class="bm">Post Production · 10 Views</div></div><div class="ba">→</div></a>
-        <div class="bstat"><div class="bn" style="opacity:.3">—</div><div class="bi"><div class="bt">TOOLS</div><div class="bm">Photoshop · Premiere Pro · After Effects</div></div></div>
-        <div class="bstat"><div class="bn" style="opacity:.3">—</div><div class="bi"><div class="bt">SERVICES</div><div class="bm">Video Editing · Starting from US$10</div></div></div>
-        <div class="bstat bstat-rust"><div class="bn" style="color:var(--rust)">◆</div><div class="bi"><div class="bt">MEMBER SINCE 2018</div><div class="bm" style="color:var(--dim)">175 Views · 12 Appreciations · Available for Freelance</div></div></div>
+    <div class="cgrid">
+
+        <!-- Adrig -->
+        <div class="ci-card">
+            <div class="ci-card-media">
+                <video autoplay muted loop playsinline>
+                    <source src="re2/adrig-projects/adrig-project-v3.mp4" type="video/mp4" />
+                </video>
+            </div>
+            <div class="ci-card-info">
+                <div>
+                    <div class="ci-card-name">ADRIG</div>
+                    <div class="ci-card-type">VIDEO PRODUCTION</div>
+                </div>
+                <div class="ci-card-tag">12 VIDEOS</div>
+            </div>
+        </div>
+
+        <!-- Mind Palace -->
+        <div class="ci-card">
+            <div class="ci-card-media">
+                <video autoplay muted loop playsinline>
+                    <source src="re2/mind-palace/30-days-psychology-day-21.mp4" type="video/mp4" />
+                </video>
+            </div>
+            <div class="ci-card-info">
+                <div>
+                    <div class="ci-card-name">MIND PALACE</div>
+                    <div class="ci-card-type">CONTENT & EDITING</div>
+                </div>
+                <div class="ci-card-tag">3+ YRS</div>
+            </div>
+        </div>
+
+        <!-- Saamykannu -->
+        <div class="ci-card">
+            <div class="ci-card-media">
+                <video autoplay muted loop playsinline>
+                    <source src="re2/saamykannu/saamykannu-100k-reel.mp4" type="video/mp4" />
+                </video>
+            </div>
+            <div class="ci-card-info">
+                <div>
+                    <div class="ci-card-name">SAAMYKANNU</div>
+                    <div class="ci-card-type">SOCIAL MEDIA</div>
+                </div>
+                <div class="ci-card-tag">100K MILESTONE</div>
+            </div>
+        </div>
+
+        <!-- Kriha -->
+        <div class="ci-card">
+            <div class="ci-card-media">
+                <video autoplay muted loop playsinline>
+                    <source src="re2/kriha/insta-reel-3-regular-communication-v1.mp4" type="video/mp4" />
+                </video>
+            </div>
+            <div class="ci-card-info">
+                <div>
+                    <div class="ci-card-name">KRIHA</div>
+                    <div class="ci-card-type">INSTAGRAM REELS</div>
+                </div>
+                <div class="ci-card-tag">SOCIAL</div>
+            </div>
+        </div>
+
+        <!-- Mojo & Doc -->
+        <div class="ci-card">
+            <div class="ci-card-media">
+                <video autoplay muted loop playsinline>
+                    <source src="re2/mojo-and-doc/beauty-treatments.mp4" type="video/mp4" />
+                </video>
+            </div>
+            <div class="ci-card-info">
+                <div>
+                    <div class="ci-card-name">MOJO &amp; DOC</div>
+                    <div class="ci-card-type">BRAND VIDEO</div>
+                </div>
+                <div class="ci-card-tag">WELLNESS</div>
+            </div>
+        </div>
+
+        <!-- Cafe Taupe -->
+        <div class="ci-card logo-card">
+            <div class="ci-card-media">
+                <img src="re2/cafe-taupe/cafe-taupe-logo-dark.png" alt="Cafe Taupe Logo" loading="lazy" />
+            </div>
+            <div class="ci-card-info">
+                <div>
+                    <div class="ci-card-name">CAFE TAUPE</div>
+                    <div class="ci-card-type">BRAND IDENTITY</div>
+                </div>
+                <div class="ci-card-tag">LOGO</div>
+            </div>
+        </div>
+
+        <!-- Merchant Mode -->
+        <div class="ci-card logo-card">
+            <div class="ci-card-media">
+                <img src="re2/merchant%20mode/merchant%20mode%20logo_transparent.png" alt="Merchant Mode Logo" loading="lazy" />
+            </div>
+            <div class="ci-card-info">
+                <div>
+                    <div class="ci-card-name">MERCHANT MODE</div>
+                    <div class="ci-card-type">LOGO DESIGN</div>
+                </div>
+                <div class="ci-card-tag">BRANDING</div>
+            </div>
+        </div>
+
+        <!-- Adrig B-roll -->
+        <div class="ci-card">
+            <div class="ci-card-media">
+                <video autoplay muted loop playsinline>
+                    <source src="re2/adrig-projects/adrig-vid-1.mp4" type="video/mp4" />
+                </video>
+            </div>
+            <div class="ci-card-info">
+                <div>
+                    <div class="ci-card-name">ADRIG — VOL.2</div>
+                    <div class="ci-card-type">SHORT FORM VIDEO</div>
+                </div>
+                <div class="ci-card-tag">REEL</div>
+            </div>
+        </div>
+
+        <!-- Mind Palace reel -->
+        <div class="ci-card">
+            <div class="ci-card-media">
+                <video autoplay muted loop playsinline>
+                    <source src="re2/mind-palace/bhw-reel.mp4" type="video/mp4" />
+                </video>
+            </div>
+            <div class="ci-card-info">
+                <div>
+                    <div class="ci-card-name">MIND PALACE — REEL</div>
+                    <div class="ci-card-type">INSTAGRAM REEL</div>
+                </div>
+                <div class="ci-card-tag">CONTENT</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- SOCIAL MEDIA CAMPAIGNS -->
+<div id="social">
+    <div class="sh">
+        <h2><span class="sp">// 03</span>SOCIAL MEDIA CAMPAIGNS</h2>
+        <span class="sn">SAAMYKANNU · 100K MILESTONE · LINKEDIN</span>
+    </div>
+    <div class="smgrid">
+        <div class="sm-card wide" data-label="SAAMYKANNU — 100K CELEBRATION POSTER">
+            <img src="social-media/saamykannu-100k-celebration-poster.png" alt="100K Celebration" loading="lazy" />
+        </div>
+        <div class="sm-card" data-label="SAAMYKANNU — GROUP COLLAGE">
+            <img src="social-media/saamykannu-group-photo-collage.png" alt="Group Collage" loading="lazy" />
+        </div>
+        <div class="sm-card" data-label="SAAMYKANNU — TITLE CARD V1">
+            <img src="social-media/saamykannu-title-card-v1.png" alt="Title Card V1" loading="lazy" />
+        </div>
+        <div class="sm-card" data-label="SAAMYKANNU — TITLE CARD V2">
+            <img src="social-media/saamykannu-title-card-v2.png" alt="Title Card V2" loading="lazy" />
+        </div>
+        <div class="sm-card" data-label="SAAMYKANNU — 100K MILESTONE SCREENSHOT">
+            <img src="social-media/saamykannu-100k-milestone-screenshot.png" alt="100K Milestone" loading="lazy" />
+        </div>
+        <div class="sm-card wide" data-label="LINKEDIN BANNER — KAMALA ARUNACHALAM">
+            <img src="social-media/linkedin-banner-kamala-arunachalam.png" alt="LinkedIn Banner" loading="lazy" />
+        </div>
+        <div class="sm-card" data-label="SAAMYKANNU — FESTIVAL REEL">
+            <video autoplay muted loop playsinline>
+                <source src="re2/saamykannu/saamykannu-fsf-v2.mp4" type="video/mp4" />
+            </video>
+        </div>
+        <div class="sm-card" data-label="SAAMYKANNU — 1001 REEL">
+            <video autoplay muted loop playsinline>
+                <source src="re2/saamykannu/saamykannu-1001.mp4" type="video/mp4" />
+            </video>
+        </div>
+        <div class="sm-card" data-label="ADRIG — FOOTBALL MATCH EDIT">
+            <video autoplay muted loop playsinline>
+                <source src="re2/adrig-projects/football-match.mp4" type="video/mp4" />
+            </video>
+        </div>
     </div>
 </div>
 
 <!-- ABOUT -->
 <div id="about">
-    <div class="sh">
-        <h2><span class="sp">// 03</span>ABOUT</h2>
+    <div class="sh sh-alt">
+        <h2><span class="sp">// 04</span>ABOUT</h2>
         <span class="sn">WHO I AM</span>
     </div>
     <div class="about-grid">
@@ -770,8 +877,8 @@
 
 <!-- EXPERIENCE -->
 <div id="experience">
-    <div class="sh sh-rust">
-        <h2><span class="sp">// 04</span>EXPERIENCE</h2>
+    <div class="sh">
+        <h2><span class="sp">// 05</span>EXPERIENCE</h2>
         <span class="sn">WORK HISTORY</span>
     </div>
     <div class="elist">
@@ -827,8 +934,8 @@
 
 <!-- SKILLS -->
 <div id="skills">
-    <div class="sh">
-        <h2><span class="sp">// 05</span>SKILLS &amp; CERTIFICATIONS</h2>
+    <div class="sh sh-alt">
+        <h2><span class="sp">// 06</span>SKILLS &amp; CERTIFICATIONS</h2>
         <span class="sn">CAPABILITIES</span>
     </div>
     <div class="sk-bars">
@@ -855,18 +962,18 @@
         </div>
     </div>
     <div class="cert-list">
-        <div class="ci"><div class="cnum">◆</div><div class="cn">Google Prompting Essentials</div></div>
-        <div class="ci"><div class="cnum">◆</div><div class="cn">Adobe Photoshop CC 2015</div></div>
-        <div class="ci"><div class="cnum">◆</div><div class="cn">Business Analysis &amp; Process Management</div></div>
-        <div class="ci"><div class="cnum">◆</div><div class="cn">Google Ads for Beginners</div></div>
-        <div class="ci"><div class="cnum">◆</div><div class="cn">Strategic Thinking</div></div>
+        <div class="ci-cert"><div class="cnum">◆</div><div class="cn">Google Prompting Essentials</div></div>
+        <div class="ci-cert"><div class="cnum">◆</div><div class="cn">Adobe Photoshop CC 2015</div></div>
+        <div class="ci-cert"><div class="cnum">◆</div><div class="cn">Business Analysis &amp; Process Management</div></div>
+        <div class="ci-cert"><div class="cnum">◆</div><div class="cn">Google Ads for Beginners</div></div>
+        <div class="ci-cert"><div class="cnum">◆</div><div class="cn">Strategic Thinking</div></div>
     </div>
 </div>
 
 <!-- EDUCATION -->
 <div>
-    <div class="sh sh-rust">
-        <h2><span class="sp">// 06</span>EDUCATION</h2>
+    <div class="sh">
+        <h2><span class="sp">// 07</span>EDUCATION</h2>
         <span class="sn">ACADEMIC BACKGROUND</span>
     </div>
     <div class="edu-list">
@@ -895,8 +1002,8 @@
 
 <!-- CONTACT -->
 <div id="contact">
-    <div class="sh">
-        <h2><span class="sp">// 07</span>LET'S WORK</h2>
+    <div class="sh sh-alt">
+        <h2><span class="sp">// 08</span>LET'S WORK</h2>
         <span class="sn">GET IN TOUCH</span>
     </div>
     <div class="ct-grid">
@@ -936,17 +1043,42 @@
 </footer>
 
 <script>
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                const bar = e.target;
-                bar.style.width = bar.dataset.w + '%';
-                observer.unobserve(bar);
-            }
-        });
-    }, { threshold: 0.2 });
+    /* ── CURSOR ── */
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+    (function loop() { rx += (mx - rx) * 0.11; ry += (my - ry) * 0.11; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); })();
+    document.querySelectorAll('a, button, .wi, .ci-card, .sm-card, .s-box, .ci-cert, .ast, .edu-row').forEach(el => {
+        el.addEventListener('mouseenter', () => { dot.classList.add('hov'); ring.classList.add('hov'); });
+        el.addEventListener('mouseleave', () => { dot.classList.remove('hov'); ring.classList.remove('hov'); });
+    });
 
-    document.querySelectorAll('.skill-bar').forEach(bar => observer.observe(bar));
+    /* ── SKILL BARS ── */
+    const barObs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.style.width = e.target.dataset.w + '%'; barObs.unobserve(e.target); } });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.skill-bar').forEach(b => barObs.observe(b));
+
+    /* ── COUNT-UP ── */
+    function countUp(el) {
+        const target = parseInt(el.dataset.target);
+        const suffix = el.dataset.suffix || '+';
+        let n = 0;
+        const step = target / (1600 / 16);
+        const t = setInterval(() => { n = Math.min(n + step, target); el.textContent = Math.floor(n) + suffix; if (n >= target) clearInterval(t); }, 16);
+    }
+    const statObs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { countUp(e.target); statObs.unobserve(e.target); } });
+    }, { threshold: 0.6 });
+    document.querySelectorAll('.s-box .n[data-target]').forEach(el => statObs.observe(el));
+
+    /* ── GLITCH ON LOAD ── */
+    const heroName = document.querySelector('.hero-name');
+    setTimeout(() => {
+        heroName.style.animation = 'name-glitch 0.5s steps(2) 1';
+        heroName.addEventListener('animationend', () => { heroName.style.animation = ''; }, { once: true });
+    }, 700);
 </script>
 </body>
 </html>
